@@ -1,0 +1,37 @@
+version: "3.7"
+
+volumes:
+  psg:
+
+services:
+  boilerplate-db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    # environment: # TODO: IMPLEMENT
+    #   - MONGO_INITDB_ROOT_USERNAME=username
+    #   - MONGO_INITDB_ROOT_PASSWORD=password
+
+  boilerplate-vue-frontend:
+    build:
+      dockerfile: client/Dockerfile
+      context: ./
+      args:
+      - VUE_APP_REST_URL=http://127.0.0.1:5000  
+    ports:
+      - "8080:8080"
+    image: boilerplate-vue-frontend
+  
+
+  boilerplate-flask-backend:
+    build:
+      dockerfile: server/Dockerfile
+      context: ./
+    ports:
+      - "5000:5000"
+    image: boilerplate-flask-backend
+    depends_on:
+      - boilerplate-db
+      
+    environment:
+      - DATABASE_URL=mongodb://boilerplate-db:27017/toldyou

@@ -13,7 +13,7 @@ export default {
     HelloWorld
   },
   setup() {
-    getHttp('http://127.0.0.1:5000/toldyou', 'json').then((response) => { console.log(response); })
+    getHttp(`${process.env.VUE_APP_REST_URL}/toldyou`, 'json').then((response) => { console.log(response); })
   }
 }
 </script>
